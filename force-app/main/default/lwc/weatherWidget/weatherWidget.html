@@ -1,0 +1,75 @@
+<template>
+    <div class="slds-size_medium slds-align_absolute-center">
+		<div>
+			<template if:true={showSearchBar}>
+                <div class="slds-m-top_none" onkeyup={handleSearch}>
+                    <lightning-input
+                        class="slds-m-top_none"
+                        name="enter-search"
+                        label="Search a place : "
+                        type="search"
+						disabled={isSearchBarDisabled}
+                        ></lightning-input>
+                </div>
+            </template>
+			<template if:true={loading}>
+				<div class="spinner slds-size_large slds-is-relative">
+					<lightning-spinner class="slds-box" alternative-text="Loading"></lightning-spinner>
+				</div>
+			</template>
+            <template if:false={loading}>
+                <template if:true={error}>
+                    <div>
+                        <lightning-card>
+                            <div class="slds-m-around_large slds-text-heading_large slds-text-align_center">
+                                {errorMessage}
+                            </div>
+                        </lightning-card>
+                    </div>
+                </template>
+                <template if:false={error}>
+                    <lightning-card>
+                        <template if:true={showLastReportSentDateTime}>
+                            <div class="slds-text-heading_small slds-text-align_center">
+                                Last Report Sent : {lastReportSentDateTime}
+                            </div>
+                        </template>
+                        <div class="slds-text-heading_large slds-text-align_center" style="font-weight:bold">
+                            {city}
+                        </div>
+                        <lightning-button if:false={showSearchBar} label={sendButtonLabel} onclick={handleSendButtonClick} slot="actions"></lightning-button>
+                        <div class="slds-m-vertical_large">
+                            <template if:false={unknownWeather}>
+                                <img class="weatherIcon" src={weatherIconFinalURL}>
+                            </template>
+                            <template if:true={unknownWeather}>
+                                <img class="weatherIcon" src="https://raw.githubusercontent.com/manifestinteractive/weather-underground-icons/master/dist/icons/black/png/256x256/unknown.png">
+                            </template>
+                        </div>
+                        <lightning-layout>
+                            <lightning-layout-item padding="around-small" size="4">
+                                <div>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/172/172922.png">
+                                    <div class="slds-text-heading_medium slds-text-align_center">{windSpeed} km/h</div>
+                                </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item padding="around-small" size="4">
+                                <div>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/107/107818.png">
+                                    <div class="slds-text-heading_medium slds-text-align_center">{temperature}°C</div>
+                                </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item padding="around-small" size="4">
+                                <div>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/727/727790.png">
+                                    <div class="slds-text-heading_medium slds-text-align_center">{humidity}%
+                                    </div>
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </lightning-card>
+                </template>
+            </template>
+        </div>
+    </div>
+</template>
